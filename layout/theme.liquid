@@ -24,31 +24,27 @@
 
     {% comment %}theme-check-disable LiquidTag{% endcomment %}
     {%- render 'meta-tags' -%}
-    {% capture CFH %}
-      {{ content_for_header }}{% endcapture %}
+    {% capture CFH %}{{ content_for_header }}{% endcapture %}
     {% if template.name != 'product' and template.name != 'cart' %}
-      {% capture CFH %}
-        {{ CFH | replace: 'data-source-attribution="shopify.dynamic-checkout"', 'data-source-attribution="shopify.dynamic-checkout" type="text/gzip"' }}{% endcapture %}
+      {% capture CFH %}{{ CFH | replace: 'data-source-attribution="shopify.dynamic-checkout"', 'data-source-attribution="shopify.dynamic-checkout" type="text/gzip"' }}{% endcapture %}
     {% endif %}
     {% comment %}theme-check-enable LiquidTag{% endcomment %}
     {{ CFH }}
 
     {%- render 'styles-tags' -%}
 
-    <script>
-      document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
-    </script>
+    <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');</script>
 
   </head>
 
   <body class="template-{{ template.name }}">
-
+    
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{ "accessibility.skip_to_text" | t }}
     </a>
 
     <site-overlay class="d-block" id="site-overlay"></site-overlay>
-
+  
     {% section 'header' %}
 
     {% section 'mobile-nav-drawer' %}
@@ -57,7 +53,7 @@
 
     {%- section 'newsletter' -%}
 
-
+    
     <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
       {{ content_for_layout }}
     </main>
@@ -67,21 +63,24 @@
     {% endif %}
 
     {% if settings.enable_quickshop %}
-      <quick-shop></quick-shop>
+      <quick-shop>
+        
+      </quick-shop>
     {% endif %}
 
     <modal-dialog id="PopupModal-video">
       <div class="modal" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" data-customVideoPopup>
-          <div class="modal-content">
-            <div class="modal-head">
-              <button class="btn p-2 close-quickshop" type="button" id="ModalClose-video" aria-label="{{ 'sections.video-with-text.close_video' | t }}">
-                <span class="icon-close"></span>
-              </button>
+          <div class="modal-dialog modal-dialog-centered" data-customVideoPopup>
+            <div class="modal-content">
+              <div class="modal-head">
+                <button class="btn p-2 close-quickshop" type="button" id="ModalClose-video" aria-label="{{ 'sections.video-with-text.close_video' | t }}">
+                  <span class="icon-close"></span>
+                </button>
+              </div>
+              <div class="modal-body video-section">
+              </div>
             </div>
-            <div class="modal-body video-section"></div>
           </div>
-        </div>
       </div>
     </modal-dialog>
 
@@ -116,17 +115,11 @@
     <script type="text/javascript">
       window.globalVariables = {
         cart: {{ cart | json }},
-        product:{%- if template.name == 'product' -%}
-          {{ product | json }}
-        {%- else -%}
-          {}{%- endif -%},
-        collection:{%- if template.name == 'collection' -%}
-          {
-            all_products_count: {{ collection.all_products_count }},
-            products: {{ collection.products | json }}
-          }
-        {%- else -%}
-          {}{%- endif -%},
+        product: {%- if template.name == 'product' -%}{{ product | json }}{%- else -%}{}{%- endif -%},
+        collection: {%- if template.name == 'collection' -%}{
+          all_products_count: {{ collection.all_products_count }},
+          products: {{ collection.products | json }}
+        }{%- else -%}{}{%- endif -%},
         template: '{{ template.name }}',
         templateSuffix: '{{ template.suffix }}',
         cart_drawer: {{ settings.enable_cart_drawer | json }},
@@ -150,47 +143,27 @@
         addToCart: `{{ 'products.product.add_to_cart' | t }}`,
         upsellAddText: `{{ 'products.product.upsell_add' | t }}`,
         soldOut: `{{ 'products.product.sold_out' | t }}`,
-        unavailable: `{{ 'products.product.unavailable' | t }}`
+        unavailable: `{{ 'products.product.unavailable' | t }}`,
       }
     </script>
 
     {% if settings.enable_login_helper %}
       <script type="application/json" data-login-json>
         {
-          "settings": {
-            "type": "default",
-            "enable":{% if settings.enable_login_helper %}
-              true
-            {% else %}
-              false{% endif %},
-            "account_not_found": "{% if settings.account_not_found %}
-              {{ settings.account_not_found | escape }}
-            {% else %}
-              null{% endif %}",
-            "account_enable": "{% if settings.account_enable %}
-              {{ settings.account_enable | escape }}
-            {% else %}
-              null{% endif %}",
-            "account_disable": "{% if settings.account_disable %}
-              {{ settings.account_disable | escape }}
-            {% else %}
-              null{% endif %}",
-            "account_invited": "{% if settings.account_invited %}
-              {{ settings.account_invited | escape }}
-            {% else %}
-              null{% endif %}",
-            "account_declined": "{% if settings.account_declined %}
-              {{ settings.account_declined | escape }}
-            {% else %}
-              null{% endif %}"
-          },
-          "sender_email":{% if settings.sender_email %}"{{ settings.sender_email | escape }}"
-          {% else %}
-            null{% endif %},
-          "status": null,
-          "message": null,
-          "customerEmail": "{{ customer.email }}",
-          "isLoginFormVisible": true
+            "settings": {
+              "type": "default",
+              "enable": {% if settings.enable_login_helper %}true{% else %}false{% endif %},
+              "account_not_found": "{% if settings.account_not_found %}{{ settings.account_not_found | escape }}{% else %}null{% endif %}",
+              "account_enable": "{% if settings.account_enable %}{{ settings.account_enable | escape }}{% else %}null{% endif %}",
+              "account_disable": "{% if settings.account_disable %}{{ settings.account_disable | escape }}{% else %}null{% endif %}",
+              "account_invited": "{% if settings.account_invited %}{{ settings.account_invited | escape }}{% else %}null{% endif %}",
+              "account_declined": "{% if settings.account_declined %}{{ settings.account_declined | escape }}{% else %}null{% endif %}"
+            },
+            "sender_email": {% if settings.sender_email %}"{{ settings.sender_email | escape }}"{% else %}null{% endif %},
+            "status": null,
+            "message": null,
+            "customerEmail": "{{ customer.email }}",
+            "isLoginFormVisible": true
         }
       </script>
     {% endif %}
@@ -200,7 +173,7 @@
     {%- render 'script-tags' -%}
 
     {% if template.name != 'product' and template.name != 'cart' %}
-      <script type="text/javascript" defer>
+    <script type="text/javascript" defer>
         (function manageDynamicCheckoutJS() {
           let checkoutBtn = document.querySelector('#additional-checkout-buttons');
           if (checkoutBtn != null) {
@@ -222,60 +195,7 @@
             observer.observe(checkoutBtn);
           }
         })();
-      </script>
+    </script>
     {% endif %}
-    <script type="text/javascript">
-      window.customerDetails = {
-        customerTags: '{{ customer.tags | json }}',
-        email: "{{ customer.email }}",
-        id: "{{ customer.id }}",
-        url: "{{ shop.url }}",
-        rechargeCustomerDetails: null,
-        rechargeSubscriptions: null,
-        rechargeGiftSubscriptions: [],
-        rechargeCustomerAddress: null,
-        rechargePaymentMethods: null,
-        rechargeOnetimes: null,
-        rechargeDeliverySchedule: null,
-        shopifyProductsJSON: [],
-        layout_style: '{{settings.layout_style }}',
-        graphQLProductsJSON: null,
-        shopifyCommonApi: "{{ settings.shopifyCommonApi | default: '/tools/ha-api/shopify/common' }}",
-        rechargeCommonApi: "{{ settings.rechargeCommonApi | default: '/tools/ha-api/recharge/common' }}",
-        no_image_replacement: "{{ settings.no_image_replacement | image_url: '576x', crop: 'center', format: 'pjpg' }}"
-      }
-    </script>
-    {%- capture timeStamp %}
-      {{ 'today' | date: '%s' }}{%- endcapture -%}
-    <script type="text/javascript">
-      window.APImanagerKey = {
-        key1: "{% render 'ha-hash', url_identifier: 'ha-api/customers', method: 'GET', timeStamp: timeStamp %}",
-        key2: "{% render 'ha-hash', url_identifier: 'ha-api/subscriptions', method: 'GET', timeStamp: timeStamp %}",
-        key3: "{% render 'ha-hash', url_identifier: 'ha-api/addresses', method: 'GET', timeStamp: timeStamp %}",
-        key4: "{% render 'ha-hash', url_identifier: 'ha-api/payment_methods', method: 'GET', timeStamp: timeStamp %}",
-        key5: "{% render 'ha-hash', url_identifier: 'ha-api/onetimes', method: 'GET', timeStamp: timeStamp %}",
-        key6: "{% render 'ha-hash', url_identifier: 'ha-api/subscriptionById', method: 'GET', timeStamp: timeStamp %}",
-        key7: "{% render 'ha-hash', url_identifier: 'ha-api/graphql', method: 'GET', timeStamp: timeStamp %}",
-        key8: "{% render 'ha-hash', url_identifier: 'ha-api/products.json', method: 'GET', timeStamp: timeStamp %}",
-        key9: "{% render 'ha-hash', url_identifier: 'ha-api/charges', method: 'GET', timeStamp: timeStamp %}",
-        key10: "{% render 'ha-hash', url_identifier: 'ha-api/delivery_schedule', method: 'GET', timeStamp: timeStamp %}",
-        key11: "{% render 'ha-hash', url_identifier: 'ha-api/set_next_charge_date', method: 'POST', timeStamp: timeStamp %}",
-        key12: "{% render 'ha-hash', url_identifier: 'ha-api/onetimes-charge-date', method: 'PUT', timeStamp: timeStamp %}",
-        key13: "{% render 'ha-hash', url_identifier: 'ha-api/cancel', method: 'POST', timeStamp: timeStamp %}",
-        key14: "{% render 'ha-hash', url_identifier: 'ha-api/activate', method: 'POST', timeStamp: timeStamp %}",
-        key15: "{% render 'ha-hash', url_identifier: 'ha-api/addresses', method: 'PUT', timeStamp: timeStamp %}",
-        key16: "{% render 'ha-hash', url_identifier: 'ha-api/subscriptions', method: 'PUT', timeStamp: timeStamp %}",
-        key17: "{% render 'ha-hash', url_identifier: 'ha-api/notifications', method: 'POST', timeStamp: timeStamp %}",
-        key18: "{% render 'ha-hash', url_identifier: 'ha-api/onetimes', method: 'POST', timeStamp: timeStamp %}",
-        key19: "{% render 'ha-hash', url_identifier: 'ha-api/onetimes', method: 'PUT', timeStamp: timeStamp %}",
-        key20: "{% render 'ha-hash', url_identifier: 'ha-api/onetimes', method: 'DELETE', timeStamp: timeStamp %}",
-        key21: "{% render 'ha-hash', url_identifier: 'ha-api/onetimes-bulk', method: 'DELETE', timeStamp: timeStamp %}",
-        key22: "{% render 'ha-hash', url_identifier: 'ha-api/apply_discount', method: 'POST', timeStamp: timeStamp %}",
-        key23: "{% render 'ha-hash', url_identifier: 'ha-api/retention_strategies', method: 'GET', timeStamp: timeStamp %}",
-        key24: "{% render 'ha-hash', url_identifier: 'ha-api/charge/skip', method: 'POST', timeStamp: timeStamp %}",
-        key25: "{% render 'ha-hash', url_identifier: 'ha-api/charge/unskip', method: 'POST', timeStamp: timeStamp %}",
-        timeStamp: {{ timeStamp | json }}
-      }
-    </script>
   </body>
 </html>
