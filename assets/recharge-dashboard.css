@@ -1,0 +1,14 @@
+.account_nav {
+    width: 100%;
+    justify-content: space-between;
+}
+
+li.tablink.open {
+    font-weight: bold;
+}
+.recharge-item {
+    padding: 30px;
+}
+.recharge-inactive .recharge-item-wrapper>div {
+    opacity: .5;
+}

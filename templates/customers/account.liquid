@@ -1,34 +1,266 @@
 {{ 'customer.css' | asset_url | stylesheet_tag }}
-
-<div class="pt-7 pt-lg-10 pb-7 pb-lg-9" style="background-color: #F3F7F9;">
+<custom-dashboard>
+    <custom-tabs>
     <div class="container">
         <div class="row">
-            <div class="col-sm-8 col-12 mx-auto text-center">
+            <div class="col-12 text-center">
                 <h6 class="m-0">{{ settings.welcome_text }}</h6>
                 <h1 class="mb-5">{{ 'customer.account.first_name_pretext' | t }}, {{ customer.first_name }}!</h1>
-                <ul class="d-flex justify-content-center list-unstyled m-0 account_nav">
-                    <li class="px-3 lh-1 border-end border-gray-500">
-                        <a class="font-size-md text-capitalize fw-bold lh-1 active" href="/account" title="{{ 'customer.orders.title' | t }}" rel="nofollow" aria-label="{{ 'customer.orders.title' | t }}">
-                           {{ 'customer.orders.title' | t }}
-                        </a>
-                    </li>
-                    <li class="px-3 lh-1 border-end border-gray-500">    
-                        <a class="font-size-md text-capitalize lh-1" href="{{ routes.account_addresses_url }}">
-                            {{ 'customer.account.view_addresses' | t }}
-                        </a>
-                    </li>
-                    <li class="px-3 lh-1">    
-                        <a class="font-size-md text-capitalize lh-1" href="{{ routes.account_logout_url }}">
-                            {{ 'customer.log_out' | t }}
-                        </a>
-                    </li>
+                <ul class="d-flex justify-content-space-between list-unstyled m-0 account_nav">
+                      <li class="tablink open" role="tab">
+                                    <a role="tab" data-toggle="tab" href="#accountTab" data-tabcontent="#accountTab"
+                                        aria-expanded="false" class="" data-manage_subscriptions_link>
+                                        {{ 'recharge.dashboard_tabs.manage_subscription' | t }}</a>
+                                </li>
+                                <li class="tablink" role="tab">
+                                    <a role="tab" data-toggle="tab" order-history href="#orderhistory"
+                                        data-tabcontent="#orderhistory" aria-expanded="false" class="">
+                                        {{ 'recharge.dashboard_tabs.upcoming_orders' | t }}</a>
+                                </li>
+                                <li class="tablink" role="tab">
+                                    <a role="tab" data-toggle="tab" href="#deliveryschedule"
+                                        data-tabcontent="#deliveryschedule" aria-expanded="false" class="" data-delivery-link>
+                                        {{ 'recharge.dashboard_tabs.delivery_schedule' | t }}</a>
+                                </li>
+                                <li class="tablink" role="tab">
+                                    <a role="tab" data-toggle="tab" order-history href="#orderhistory"
+                                        data-tabcontent="#orderhistory" aria-expanded="false"
+                                        class="">{{ 'customer.orders.title' | t }}</a>
+                                </li>
+                                <li class="tablink" role="tab">
+                                    <a role="tab" data-toggle="tab" order-history href="#subscriptionBilling"
+                                        data-tabcontent="#subscriptionBilling" aria-expanded="false"
+                                        class="">{{ 'recharge.dashboard_tabs.subscription_billing' | t }}</a>
+                                    </a>
+                                </li>
+                                <li class="tablink" role="tab">
+                                    <a role="tab" data-toggle="tab" href="#addressesTab" data-tabcontent="#addressesTab" aria-expanded="false" class=""> {{ 'customer.account.view_addresses' | t }} </a>
+                                </li>
+                                <li role="tab">
+                                    <a class=""
+                                        href="{{ routes.account_logout_url }}">{{ 'customer.log_out' | t }}</a>
+                                </li>
                 </ul>
             </div>
         </div>
     </div>
 </div>
+<div id="myTabContent">
+  <div class="section-content mt-lg-3 mb-lg-11">
+    <div class="container pt-lg-1 pb-lg-2">
+      <div class="tab-content">
+        <div class="tab-pane tabcontent open" id="accountTab" role="tabpanel">
+          <div class="row">
+            <div class="col-lg-3 mb-lg-0 mb-7 border-end border-secondary">
+                <div class="d-lg-flex align-items-center mb-3 mb-lg-4">
+                    <div class="profile position-relative mx-auto mx-lg-0 me-lg-4 mb-3 mb-lg-0">
+                        <p class="m-0 text-uppercase text-white position-absolute fw-bold">
+                            {{ customer.first_name | slice: 0 }}{{ customer.last_name | slice: 0 }}
+                        </p>
+                    </div>
+                    <h5 class="text-uppercase profile-text font-family-heading m-0">
+                        {{ customer.name }}</h5>
+                </div>
+                <div class="pt-lg-1">
+                    <p class="mb-2 pb-1">{{ customer.email }}</p>
+                    <p class="mb-2">{{ 'customer.account.password_label' | t }}: ********** <a
+                            href="/account/login#recover"
+                            class="ms-2 text-primary fw-bold font-size-md">{{ 'customer.account.reset_label' | t }}</a>
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-9 ps-lg-9">
+              <div data-normal_subscriptions>
+                <h4 class="mb-4 order_title">{{ 'your subscription' | capitalize }}</h4>
+                 {% include "recharge-active-subscription" %}
+                 {% include "recharge-inactive-subscription" %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane tabcontent" id="orderhistory" role="tabpanel">
+            <div class="row">
+                <div class="col-lg-3 pt-lg--2 pe-xl-5 mb-lg-0 mb-6 text-center text-lg-start">
+                    <div class="d-lg-flex align-items-center mb-3 mb-lg-4">
+                        <div class="profile position-relative mx-auto mx-lg-0 me-lg-4 mb-3 mb-lg-0">
+                            <p class="m-0 text-uppercase text-white position-absolute fw-bold">
+                                {{ customer.first_name | slice: 0 }}{{ customer.last_name | slice: 0 }}
+                            </p>
+                        </div>
+                        <h5 class="text-uppercase profile-text font-family-heading m-0">
+                            {{ customer.name }}</h5>
+                    </div>
+                    <div class="pt-lg-1">
+                        <p class="mb-2 pb-1">{{ customer.email }}</p>
+                        <p class="mb-2">{{ 'customer.account.password_label' | t }}: ********** <a
+                                href="/account/login#recover"
+                                class="ms-2 text-primary fw-bold font-size-md">{{ 'customer.account.reset_label' | t }}</a>
+                        </p>
+                    </div>
+                   
+                </div>
+                <div class="col-lg-9 ps-lg-9">
+                    <h4 class="mb-4 order_title">{{ 'customer.orders.title' | t }}</h4>
+                    {%- if customer.orders.size > 0 -%}
+                    {% paginate customer.orders by 15 %}
+                    <table role="table" class="order-history account-table table mb-0">
+                        <caption class="visually-hidden">{{ 'customer.orders.title' | t }}</caption>
+                        <thead role="rowgroup" class="group-name">
+                            <tr role="row">
+                                <th id="ColumnOrder" scope="col" role="columnheader"
+                                    class="h6 font-family-josefin">
+                                    {{ 'customer.orders.order_number' | t }} &
+                                    {{ 'customer.orders.date' | t }}</th>
+                                <th id="ColumnFulfillment" scope="col" role="columnheader"
+                                    class="h6 font-family-josefin">
+                                    {{ 'customer.orders.fulfillment_status' | t }}</th>
+                                <th id="ColumnTotal" scope="col" role="columnheader"
+                                    class="h6 font-family-josefin text-end">
+                                    {{ 'customer.orders.total' | t }}</th>
+                            </tr>
+                        </thead>
+                        <tbody role="rowgroup" class="bg-white">
+                            {%- for order in customer.orders -%}
+                            <tr role="row">
+                                <td role="cell" headers="ColumnOrder"
+                                    data-label="{{ 'customer.orders.order_number' | t }}">
+                                    <span class="d-md-inline-block d-block">
+                                        <a href="{{ order.customer_url }}" class="text-primary fw-bold"
+                                            aria-label="{{ 'customer.orders.order_number_link' | t: number: order.name }}">
+                                            {{order.name }}
+                                        </a>
+                                    </span> on {{ order.created_at | time_tag: format: 'date' }}
+                                </td>
+                                <td headers="ColumnFulfillment" role="cell"
+                                    data-label="{{ 'customer.orders.fulfillment_status' | t }}">
+                                    {{order.fulfillment_status_label }}
+                                </td>
+                                <td class="text-end" headers="ColumnTotal" role="cell"
+                                    data-label="{{ 'customer.orders.total' | t }}">
+                                    {{order.total_price | money }}
+                                </td>
+                            </tr>
+                            {%- endfor -%}
+                        </tbody>
+                    </table>
+                    {%- if paginate.pages > 1 -%}
+                    <div class="mt-4">
+                        {% render 'pagination', paginate: paginate %}
+                    </div>
+                    {%- endif -%}
+                    {% endpaginate %}
+                    {%- else -%}
+                    <p class="text-center">{{ 'customer.orders.none' | t }}</p>
+                    {%- endif -%}
+                    <div class="mx-auto mt-7" style="max-width:500px;">
+                        <div class="recharge-gift-box d-lg-none">
+                            <img
+                                src="https://cdn.shopify.com/s/files/1/0649/4388/2457/files/Gift-Box-mobilebanner.jpg" />
+                            <div class="recharge-gift-box-txt text-center">
+                                <h4 class="text-white mb-2">
+                                    {{'recharge.recharge_gift_box.caption' | t }}</h4>
+                                <p class="text-white font-size-md">
+                                    {{'recharge.recharge_gift_box.subcaption' | t }} </p>
+                                <a class="btn btn-white"
+                                    href="#">{{ 'recharge.buttons.gift_membership'| t }}</a>
+                            </div>
+                        </div>
+                    </div>
 
-<div class="pt-5 pt-lg-12 pb-12 pb-lg-13 mb-2">
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane tabcontent" id="deliveryschedule" role="tabpanel">
+            <div class="row">
+                <div class="col-lg-3 pt-lg--2 pe-xl-5 mb-lg-0 mb-6 text-center text-lg-start">
+                    <div class="d-lg-flex align-items-center mb-3 mb-lg-4">
+                        <div class="profile position-relative mx-auto mx-lg-0 me-lg-4 mb-3 mb-lg-0">
+                            <p class="m-0 text-uppercase text-white position-absolute fw-bold">
+                                {{ customer.first_name | slice: 0 }}{{ customer.last_name | slice: 0 }}
+                            </p>
+                        </div>
+                        <h5 class="text-uppercase profile-text font-family-heading m-0">
+                            {{ customer.name }}</h5>
+                    </div>
+                    <div class="pt-lg-1">
+                        <p class="mb-2 pb-1">{{ customer.email }}</p>
+                        <p class="mb-2">{{ 'customer.account.password_label' | t }}: ********** <a href="/account/login#recover" class="ms-2 text-primary fw-bold font-size-md">{{ 'customer.account.reset_label' | t }}</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-9 ps-lg-9">
+                    <h4 class="mb-4 order_title">
+                        {{ 'recharge.dashboard_tabs.delivery_schedule' | t }}
+                    </h4>
+                    <div data-delivery_schedule>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane tabcontent" id="orderhistory" role="tabpanel"></div>
+        <div class="tab-pane tabcontent" id="subscriptionBilling" role="tabpanel">
+            <div class="row">
+                <div class="col-lg-3 pt-lg--2 pe-xl-5 mb-lg-0 mb-6 text-center text-lg-start">
+                    <div class="d-lg-flex align-items-center mb-3 mb-lg-4">
+                        <div class="profile position-relative mx-auto mx-lg-0 me-lg-4 mb-3 mb-lg-0">
+                            <p class="m-0 text-uppercase text-white position-absolute fw-bold">
+                                {{ customer.first_name | slice: 0 }}{{ customer.last_name | slice: 0 }}
+                            </p>
+                        </div>
+                        <h5 class="text-uppercase profile-text font-family-heading m-0">
+                            {{ customer.name }}</h5>
+                    </div>
+                    <div class="pt-lg-1">
+                        <p class="mb-2 pb-1">{{ customer.email }}</p>
+                        <p class="mb-2">{{ 'customer.account.password_label' | t }}: ********** <a href="/account/login#recover" class="ms-2 text-primary fw-bold font-size-md">{{ 'customer.account.reset_label' | t }}</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-9 ps-lg-9">
+                    <h4 class="mb-4 order_title">
+                        {{ 'recharge.dashboard_tabs.subscription_billing' | t }}
+                    </h4>
+                    <div data-payemnt>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane tabcontent" id="addressesTab" role="tabpanel">
+            <div class="row">
+                <div class="col-lg-3 pt-lg--2 pe-xl-5 mb-lg-0 mb-6 text-center text-lg-start">
+                    <div class="d-lg-flex align-items-center mb-3 mb-lg-4">
+                        <div class="profile position-relative mx-auto mx-lg-0 me-lg-4 mb-3 mb-lg-0">
+                            <p class="m-0 text-uppercase text-white position-absolute fw-bold">
+                                {{ customer.first_name | slice: 0 }}{{ customer.last_name | slice: 0 }}
+                            </p>
+                        </div>
+                        <h5 class="text-uppercase profile-text font-family-heading m-0">
+                            {{ customer.name }}</h5>
+                    </div>
+                    <div class="pt-lg-1">
+                        <p class="mb-2 pb-1">{{ customer.email }}</p>
+                        <p class="mb-2">{{ 'customer.account.password_label' | t }}: ********** <a href="/account/login#recover" class="ms-2 text-primary fw-bold font-size-md">{{ 'customer.account.reset_label' | t }}</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-9 ps-lg-9">
+                    <h4 class="mb-4 order_title">
+                        {{ 'customer.addresses.title' | t }}
+                    </h4>
+                    <div data-addresses>
+                    </div>
+
+                </div>
+            </div>
+      </div>
+    </div>
+  </div>
+</div>
+</custom-tabs>
+  </custom-dashboard>
+<!-- <div class="pt-5 pt-lg-12 pb-12 pb-lg-13 mb-2">
     <div class="container">
         <div class="row">
             <div class="col-lg-3 mb-lg-0 mb-7 border-end border-secondary">
@@ -91,4 +323,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
