@@ -1,7 +1,7 @@
 var allSubscriptions=[]; // Stores All logged in customer subscriptions from recharge response including Active and In-Active Subscriptions
 var activeSubscriptions=[]; // Stores Active Subscriptions
 var inActiveSubscriptions=[]; // Stores In-Active Subscriptions
-var giftSubscriptions=null; // Stores Gift Subscriptions 
+var giftSubscriptions=[]; // Stores Gift Subscriptions 
 var productsJson={}; // Stored Store front all products JSON
 var graphQLProductsJSON=null; // Stores GraphQL Products JSON which are used for displaying image
 var customerAddresses=null; // Stored Recharge All Customer Addresses
@@ -110,55 +110,54 @@ if (activeSubscriptions.length > 0) {
  * @param {JSON} subscription 
 */
 _activeSubscriptionRowHTML(subscription){
-console.log(graphQLProductsJSON);
-console.log(subscription.external_product_id.ecommerce);
 var variant=graphQLProductsJSON[subscription.external_product_id.ecommerce].variants.filter((itm)=>{
     if (itm.id == subscription.external_variant_id.ecommerce ) {
         return itm
     }
 })
 variant=variant[0]
-console.log(window.customerDetails.graphQLProductsJSON);
-var style =this._activeHTML(subscription);
+
+var style =this._activeHTML(subscription, variant);
 return style;
 }
-_activeHTML(subscription){
+_activeHTML(subscription, variant){
 let addonHtml = this._addonHtml(subscription.id);
 return `
 <div class="recharge-active" data-single-active-subscription="${subscription.id}" data-subscription-id="${subscription.id}">
-<div class="border border-gray-100 pt-5 px-5 mt-5">
-    <div class="row align-items-md-center mx-0">
-        <div class="col-md-4 col-12 mb-md-0 mb-5 px-0">
-            <div class="d-flex align-items-center">
-            <div class="order-image pe-3">
-                <img src="" alt="${subscription.product_title}" class="d-none d-lg-block recharge-img mw-100 me-3">
-            </div>
-            <div class="order-image-info pe-md-7">
-                <p class="font-size-md fw-normal ls-sm text-primary mb-2">#${subscription.id}</p>
-                <h6 class="font-family-base text-black fw-semibold ls-0 mb-0 text-capitalize" style="font-size: 17px;">${subscription.product_title}</h6>
-                
-            </div>
-            </div>
-        </div>
-        <div class="col-md-2 col-6 mb-md-0 mb-5 px-0">
-            <p class="font-size-md fw-semibold text-black text-uppercase mb-2 d-block d-md-none">QTY</p>
-            <p class="font-size-xl fw-normal text-black ls-0 mb-0 text-capitalize">Active</p>
-        </div>
-        <div class="col-md-3 col-6 mb-md-0 px-0">
-            <p class="font-size-md fw-semibold text-black text-uppercase mb-2 d-block d-md-none">NEXT SHIPMENT</p>
-            <p class="font-size-xl fw-normal text-black ls-0 mb-0">${subscription.next_charge_scheduled_at != null ?  moment(subscription.next_charge_scheduled_at).format('MMMM DD, YYYY') : '- - -'}</p>
-        </div>
-        <div class="col-md-1 col-6 mb-md-0 px-0">
-            <p class="font-size-md fw-semibold text-black text-uppercase mb-2 d-block d-md-none">TOTAL</p>
-            <p class="font-size-xl fw-normal text-black text-md-center ls-0 mb-0">${Shopify.formatMoney(subscription.price * subscription.quantity * 100, window.globalVariables.money_format)}</p>
-        </div>
-        <div class="col-md-2 col-6 text-md-end px-0">
-            <a href="#" class="btn btn-primary" data-modal-opener="editsubscription-modal"><span class="add-text">edit</span><span class="spinner"></span></a>
-            <a href="#" data-modal-opener="one-time-product-popup" class="btn pe-1 rounded-0 py-2 px-0 mt-3">+ addon</a>
-        </div>
-    </div>
+            <div class="border border-gray-100 pt-5 px-5 mt-5">
+                <div class="row align-items-md-center mx-0">
+                    <div class="col-md-4 col-12 mb-md-0 mb-5 px-0">
+                        <div class="d-flex align-items-center">
+                        <div class="order-image pe-3">
+                            <img src="${variant.image.src ? variant.image.src : graphQLProductsJSON[subscription.external_product_id.ecommerce].images[0].src}" alt="${subscription.product_title}" class="d-none d-lg-block recharge-img mw-100 me-3">
+                        </div>
+                        <div class="order-image-info pe-md-7">
+                            <p class="font-size-md fw-normal ls-sm text-primary mb-2">#${subscription.id}</p>
+                            <h6 class="font-family-base text-black fw-semibold ls-0 mb-0 text-capitalize" style="font-size: 17px;">${subscription.product_title}</h6>
+                            <p>${subscription.quantity} x ${Shopify.formatMoney(variant.price * subscription.quantity * 100, window.globalVariables.money_format)}</p>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-6 mb-md-0 mb-5 px-0">
+                        <p class="font-size-md fw-semibold text-black text-uppercase mb-2 d-block d-md-none">QTY</p>
+                        <p class="font-size-xl fw-normal text-black ls-0 mb-0 text-capitalize">Active</p>
+                    </div>
+                    <div class="col-md-3 col-6 mb-md-0 px-0">
+                        <p class="font-size-md fw-semibold text-black text-uppercase mb-2 d-block d-md-none">NEXT SHIPMENT</p>
+                        <p class="font-size-xl fw-normal text-black ls-0 mb-0">${subscription.next_charge_scheduled_at != null ?  moment(subscription.next_charge_scheduled_at).format('MMMM DD, YYYY') : '- - -'}</p>
+                    </div>
+                    <div class="col-md-1 col-6 mb-md-0 px-0">
+                        <p class="font-size-md fw-semibold text-black text-uppercase mb-2 d-block d-md-none">TOTAL</p>
+                        <p class="font-size-xl fw-normal text-black text-md-center ls-0 mb-0">${Shopify.formatMoney(subscription.price * subscription.quantity * 100, window.globalVariables.money_format)}</p>
+                    </div>
+                    <div class="col-md-2 col-6 text-md-end px-0">
+                        <a href="#" class="btn btn-primary" data-modal-opener="editsubscription-modal"><span class="add-text">edit</span><span class="spinner"></span></a>
+                        <a href="#" data-modal-opener="one-time-product-popup" class="btn pe-1 rounded-0 py-2 px-0 mt-3">+ addon</a>
+                    </div>
+         </div>
     ${addonHtml}
-</div>`;
+   </div>`;
+   
 }
 /**
  * Create In-Active Subscriptions HTML 
@@ -195,29 +194,29 @@ if (inActiveSubscriptions.length > 0) {
  * @param {JSON} subscription  
 */
 _inActiveSubscriptionRowHTML(subscription){
-// var variant=window.customerDetails.graphQLProductsJSON[subscription.external_product_id.ecommerce].variants.filter((itm)=>{
-//     if (itm.id == subscription.external_variant_id.ecommerce ) {
-//         return itm
-//     }
-// })
-// variant=variant[0]
+var variant=window.customerDetails.graphQLProductsJSON[subscription.external_product_id.ecommerce].variants.filter((itm)=>{
+    if (itm.id == subscription.external_variant_id.ecommerce ) {
+        return itm
+    }
+})
+variant=variant[0]
 console.log(window.customerDetails.graphQLProductsJSON);
-var style = this._inActiveHTML(subscription);
+var style = this._inActiveHTML(subscription, variant);
 return style;
 }
-_inActiveHTML(subscription){
+_inActiveHTML(subscription, variant){
 return `
 <div class="border recharge-inactive recharge-item" data-single-inactive-subscription="${subscription.id}">
 <div class="row align-items-md-center mx-0 recharge-item-wrapper">
     <div class="col-md-4 col-12 mb-md-0 mb-5 px-0">
         <div class="d-flex align-items-center">
             <div class="order-image pe-3">
-                <img src="" alt="${subscription.product_title}" class="d-none d-lg-block recharge-img mw-100 me-3">
+                <img src="${variant.image.src ? variant.image.src : graphQLProductsJSON[subscription.external_product_id.ecommerce].images[0].src}" alt="${subscription.product_title}" class="d-none d-lg-block recharge-img mw-100 me-3">
             </div>
             <div class="order-image-info pe-md-7">
                 <p class="font-size-md fw-normal ls-sm text-primary mb-2">#${subscription.id}</p>
                 <h6 class="font-family-base text-black fw-semibold ls-0 mb-0 text-capitalize" style="font-size: 17px;">${subscription.product_title}</h6>
-                
+                <p>${subscription.quantity} x ${Shopify.formatMoney(variant.price * subscription.quantity * 100, window.globalVariables.money_format)}</p>
             </div>
             </div>
         </div>
@@ -254,10 +253,10 @@ if (response) {
 }
 
 _createAddressHtml(){
-allSubscriptionCustomerAddress = window.customerDetails.rechargeCustomerAddress;
+customerAddresses = window.customerDetails.rechargeCustomerAddress;
 const regionNames = new Intl.DisplayNames(['en'], { type: 'region' })
 let addressHTML = "";
-for( var addresses of allSubscriptionCustomerAddress ){
+for( var addresses of customerAddresses ){
 addressHTML +=
 `<div class="col-sm-6 mb-4" data-single_customer_address="">
 <div class="card min-h-100 border-gray-200">
@@ -290,9 +289,9 @@ this.dashboard.querySelector('[data-addresses_loader_button]').classList.add('d-
 
 
 _createPayemntHTML(){
-allPayments = window.customerDetails.rechargePaymentMethods;
+customerPaymentMethods = window.customerDetails.rechargePaymentMethods;
 let allPaymentsHtml = "";
-for( var payment of allPayments )
+for( var payment of customerPaymentMethods )
 {
 allPaymentsHtml += 
 `<div class="border mb-5 table-responsive" data-payment-id="#${payment.id}">
@@ -664,6 +663,10 @@ this.dashboard.querySelectorAll('[data-edit-card]').forEach(ele =>{
         selectedProduct = JSON.parse(element.closest('[data-edit-card]').querySelector('[data-editProduct_productjson]').innerText);
         selectedProductOptions = JSON.parse(element.closest('[data-edit-card]').querySelector('[data-editProduct_productOptionjson]').innerText);
         this._generateProductHtml(eventType);
+    }
+    // Fetch Cancellation Reasons from Recharge admin side for cancellation modal 
+    if (storeCancellationReason.length == 0) {
+        this._fetchCancellationReason();
     }
 }
 

@@ -78,8 +78,8 @@ var existingProductIds=[];
     // console.log(data);
     // All Subscriptions
     window.customerDetails.rechargeSubscriptions=data.subscriptions;
-    // existingProductIds=[...existingProductIds,...data.subscriptions.map((sub)=>{return sub.external_product_id.ecommerce})]
-    // console.log(existingProductIds);
+    existingProductIds=[...existingProductIds,...data.subscriptions.map((sub)=>{return sub.external_product_id.ecommerce})]
+    console.log(existingProductIds);
     if (response.ok) {
         console.log('Subscriptions ===>',data)
         return await data;
