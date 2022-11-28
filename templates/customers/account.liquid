@@ -70,11 +70,31 @@
                 </div>
             </div>
             <div class="col-lg-9 ps-lg-9">
-              <div data-normal_subscriptions>
-                <h4 class="mb-4 order_title">{{ 'your subscription' | capitalize }}</h4>
-                 {% include "recharge-active-subscription" %}
-                 {% include "recharge-inactive-subscription" %}
-              </div>
+                <div data-normal_subscriptions>
+                    <div class="d-md-flex align-items-center justify-content-between mb-3 mb-lg-4">
+                      <h4 class="mb-2 mb-md-0">
+                          {{ 'recharge.subscription_listing.your_subscriptions' | t }}</h4>
+                      <a href="#" data-modal-opener="PopupModal-promocode"
+                          class="font-size-md fw-medium popup-link d-none">{{ 'recharge.modal.footer.heading' | t }}</a>
+                    </div>
+                    <div class="border-black d-md-block d-none py-3 bg-primary-500 ps-4">
+                      <div class="d-flex align-items-center">
+                          <div class="tab_name lh-sm ls-sm text-alabaster text-uppercase px-2 ps-md-0 col-6 col-md-4">Subscriptions</div>
+                          <div class="tab_name lh-sm ls-sm text-alabaster text-uppercase px-2 ps-md-0 col-2 col-md-2">Status</div>
+                          <div class="tab_name lh-sm ls-sm text-alabaster text-uppercase text-end text-md-start col-4 col-md-3">Next REnewal</div>
+                          <div class="tab_name lh-sm ls-sm text-alabaster text-uppercase px-2 text-center col-1 col-md-1 d-none d-md-block">TOTAL</div>
+                          <div class="tab_name lh-sm ls-sm text-alabaster text-uppercase px-2 col-2 col-md-2 d-none d-md-block"></div>
+                      </div>
+                    </div>
+                    <div class="text-center {%if customer.orders.size == 0 %}d-none{% endif %}"
+                      data-loader_button>
+                      <button class="btn ">
+                          <span class="spinner d-block"></span>
+                      </button>
+                    </div>
+                    <div class="recharge-active-subscription d-none" data-active-subscriptions></div>
+                    <div class="recharge-reactivate-subscription mt-4 pt-1 d-none" data-inactive-subscriptions></div>
+                    </div>
             </div>
           </div>
         </div>
@@ -192,6 +212,12 @@
                     <h4 class="mb-4 order_title">
                         {{ 'recharge.dashboard_tabs.delivery_schedule' | t }}
                     </h4>
+                    <div class="text-center"
+                        data-delivery_schedule_loader_button>
+                        <button class="btn ">
+                            <span class="spinner d-block"></span>
+                        </button>
+                      </div>
                     <div data-delivery_schedule>
                     </div>
 
@@ -221,6 +247,12 @@
                     <h4 class="mb-4 order_title">
                         {{ 'recharge.dashboard_tabs.subscription_billing' | t }}
                     </h4>
+                    <div class="text-center"
+                        data-payment_loader_button>
+                        <button class="btn ">
+                            <span class="spinner d-block"></span>
+                        </button>
+                      </div>
                     <div data-payemnt>
                     </div>
 
@@ -249,8 +281,15 @@
                     <h4 class="mb-4 order_title">
                         {{ 'customer.addresses.title' | t }}
                     </h4>
+                    <div class="text-center"
+                        data-addresses_loader_button>
+                        <button class="btn ">
+                            <span class="spinner d-block"></span>
+                        </button>
+                    </div>
                     <div data-addresses>
                     </div>
+                    
 
                 </div>
             </div>
@@ -259,6 +298,7 @@
   </div>
 </div>
 </custom-tabs>
+{% render 'recharge-models' %}
   </custom-dashboard>
 <!-- <div class="pt-5 pt-lg-12 pb-12 pb-lg-13 mb-2">
     <div class="container">
