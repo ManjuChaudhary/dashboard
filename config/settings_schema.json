@@ -1387,5 +1387,28 @@
         "default": "1"
       }
     ]
+  },
+  {
+    "name": "Apply discount at cancellation",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "apply_discount",
+        "label": "Do you want to apply discount at cancellation of subscription?",
+        "default": false
+      },
+      {
+        "type": "number",
+        "id": "discount_amount",
+        "label": "Enter the discount value in percentage",
+        "info": "Use value without Percentage symbol. Ex: 20.00 for 20%"
+      },
+      {
+        "type": "text",
+        "id": "discount_button_text",
+        "label": "Enter the text to show on discount button",
+        "info": "Discount button label"
+      }
+    ]
   }
 ]

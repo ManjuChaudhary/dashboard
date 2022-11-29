@@ -46,8 +46,11 @@ var existingProductIds=[];
               'email': window.customerDetails.email
           }
       };
+      console.log(config);
       const response = await fetch(this.rechargeCommonApi(), this.rechargeCommonBody(config));
+      console.log(response);
       const data = await response.json();
+      console.log(data);
       // Customer Details
       window.customerDetails.rechargeCustomerDetails=data.customers[0]
       if (response.ok) {
@@ -559,6 +562,222 @@ var existingProductIds=[];
             Utility.notification('Something went wrong','Please try again later','error')
             console.error('error in Listing Retention Strategies ===>',data)
             alert('something went wrong');
+        }
+    }
+    
+     /**
+      Update Subscription
+     * @param {Number|String} - subscription_id 
+     * @param {Number|String} - updateSubscriptionObj - can be change Subscription price / Shipping Frequency / Product / variant
+      Take reference from : https://developer.rechargepayments.com/2021-11/subscriptions/subscriptions_update
+     * @return  {JSON} - data
+     *Note*: For changing Subscription Frequency , must need to pass these three parameters : https://d.pr/i/y32aVI 
+    */
+     async _updateSubscription(subscription_id,updateSubscriptionObj){
+        var config = {
+            url: `/subscriptions/${subscription_id}`,
+            method: 'PUT',
+            timestamp: window.APImanagerKey.timeStamp,
+            hash: window.APImanagerKey.key16,
+            data: updateSubscriptionObj
+        };
+        const response = await fetch(this.rechargeCommonApi(), this.rechargeCommonBody(config));
+        const data = await response.json();
+        // Updated subscription
+        if (response.ok) {
+            console.log('Subscription Updated Successfully ===>',data)
+            return await data;
+        }else{
+            Utility.notification('Something went wrong','Error in Updating subscription','error')
+            console.error('error in updating subscription ===>',data)
+            alert('something went wrong');
+        }
+    }
+
+    /**
+      Remove One-time Addon 
+    * @param {JSON} - addonsList - Addon ID Object to delete addons
+     * For more information : https://developer.rechargepayments.com/2021-11/onetimes/onetimes_delete
+    */
+      async _cancelOnetimeAddon(addonsList){
+        let promises = [];
+        for (let addon of addonsList) {
+            let config = {
+                url: `/onetimes/${addon.id}`,
+                method: 'DELETE',
+                timestamp: window.APImanagerKey.timeStamp,
+                hash: window.APImanagerKey.key21,
+            };
+            const response = await fetch(this.rechargeCommonApi(), this.rechargeCommonBody(config));
+            promises.push(response);
+        };
+        const response = await Promise.all(promises);
+        if(response){
+            return await data;
+        }
+    }
+    
+       /**
+      Send Mail-Notification For Updating Payment Method to customer
+     * @param {Number|String} - Customer Id 
+     * @param {String} - type - email
+     * @param {String} - template_type - shopify_update_payment_information
+     For more information : https://developer.rechargepayments.com/2021-11/notifications/notifications_send
+    */
+     async _updatePaymethodMethod(){
+        var config = {
+            url: `/customers/${window.customerDetails.rechargeCustomerDetails.id}/notifications`,
+            method: 'POST',
+            data: {
+                'type': 'email',
+                'template_type': 'shopify_update_payment_information'
+            }
+        };
+        console.log(config);
+        const response = await fetch(this.rechargeCommonApi(), this.rechargeCommonBody(config));
+        // Mail Notification
+        if (response.ok) {
+            console.log('Sent Mail-Notification to the customer ===>',response)
+            console.log(config);
+            return await true;
+        }else{
+            console.warn('There is some error in sending mail notification===>',response)
+            alert('something went wrong');
+        }
+    }
+
+
+    /**
+      Change Charge Date
+     * @param {Date} - next_charge_date {Format : 'YYYY-MM-DD'} - (Date must be future date)
+     * @return  {JSON} - data
+     * For more information : https://developer.rechargepayments.com/2021-11/subscriptions/subscriptions_change_next_charge
+    */
+      async _changeChargeDate(subscription_id,next_charge_date){
+        var config = {
+            url: `/subscriptions/${subscription_id}/set_next_charge_date`,
+            method: 'POST',
+            timestamp: window.APImanagerKey.timeStamp,
+            hash: window.APImanagerKey.key11,
+            data: {
+                'date': next_charge_date
+            }
+        };
+        const response = await fetch(this.rechargeCommonApi(), this.rechargeCommonBody(config));
+        const data = await response.json();
+        // Updated Charge Date
+        if (response.ok) {
+            console.log('updated charge date successfully ===>',data)
+            return await true;
+        }else{
+            Utility.notification('Something went wrong','Error in updating charge date','error')
+            console.error('error in updating charge date ===>',data)
+            alert('something went wrong');
+        }
+    }
+
+    /**
+      Update One-time Addon 
+     * @param {Number|String} - addon_id - Addon Id
+     * @param {JSON} - addonObj - can be change charge date / Address Id / Price / Quantity
+     * @return  {JSON} - data
+     * For more information : https://developer.rechargepayments.com/2021-11/onetimes/onetimes_update
+    */
+      async _changeChargeDateAddon(addonsList,newChargeDate){
+        let promises = [];
+        for (let addon of addonsList) {
+            var addonObj={
+                'commit_update': true,
+                'next_charge_scheduled_at': newChargeDate
+            }
+            var config = {
+                url: `/onetimes/${addon.id}`,
+                method: 'PUT',
+                timestamp: window.APImanagerKey.timeStamp,
+                hash: window.APImanagerKey.key12,
+                data: addonObj
+            };
+            promises.push(await fetch(this.rechargeCommonApi(), this.rechargeCommonBody(config)));
+        }
+        const response = await Promise.all(promises);
+        if(response){
+            return await data;
+        }
+    }
+
+    /**
+      Update One-time Addon 
+     * @param {Number|String} - addon_id - Addon Id
+     * @param {JSON} - addonObj - can be change charge date / Address Id / Price / Quantity
+     * @return  {JSON} - data
+     * For more information : https://developer.rechargepayments.com/2021-11/onetimes/onetimes_update
+    */
+      async _changeChargeDateAddon(addonsList,newChargeDate){
+        let promises = [];
+        for (let addon of addonsList) {
+            var addonObj={
+                'commit_update': true,
+                'next_charge_scheduled_at': newChargeDate
+            }
+            var config = {
+                url: `/onetimes/${addon.id}`,
+                method: 'PUT',
+                timestamp: window.APImanagerKey.timeStamp,
+                hash: window.APImanagerKey.key12,
+                data: addonObj
+            };
+            promises.push(await fetch(this.rechargeCommonApi(), this.rechargeCommonBody(config)));
+        }
+        const response = await Promise.all(promises);
+        if(response){
+            return await data;
+        }
+    }
+
+     /**
+      Update Subscription
+     * @param {Number|String} - subscription_id 
+     * @param {Number|String} - updateSubscriptionObj - can be change Subscription price / Shipping Frequency / Product / variant
+      Take reference from : https://developer.rechargepayments.com/2021-11/subscriptions/subscriptions_update
+     * @return  {JSON} - data
+     *Note*: For changing Subscription Frequency , must need to pass these three parameters : https://d.pr/i/y32aVI 
+    */
+     async _updateSubscription(subscription_id,updateSubscriptionObj){
+        var config = {
+            url: `/subscriptions/${subscription_id}`,
+            method: 'PUT',
+            timestamp: window.APImanagerKey.timeStamp,
+            hash: window.APImanagerKey.key16,
+            data: updateSubscriptionObj
+        };
+        const response = await fetch(this.rechargeCommonApi(), this.rechargeCommonBody(config));
+        const data = await response.json();
+        // Updated subscription
+        if (response.ok) {
+            console.log('Subscription Updated Successfully ===>',data)
+            return await data;
+        }else{
+            Utility.notification('Something went wrong','Error in Updating subscription','error')
+            console.error('error in updating subscription ===>',data)
+            alert('something went wrong');
+        }
+    }
+    /**
+      Fetch Shopify Products JSON of subscription products
+     * @param {String} - ids - Recharge Id of the customer (Example : {'ids' : '632910392,63291234,63212347'}  )
+     * @return  {JSON} - data.products
+     * For more information : https://shopify.dev/api/admin-rest/2022-07/resources/product#get-products
+    */ 
+    async _getStoreFrontProductJSON(handle) {
+        const response = await fetch(`/products/${handle}.js`);
+        const data = await response.json() ;
+        if (response.ok) {
+            console.log('Products Json ===>',data)
+            return await data;
+        }else{
+            Utility.notification('Something went wrong','Please try again later','error')
+            console.error('Error in fetching product JSON===>',data)
+            alert('something went wrong'); 
         }
     }
 

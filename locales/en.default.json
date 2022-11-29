@@ -556,5 +556,30 @@
       "confirmation_text": "One-time product successfully added!",
       "shipment_text": "Your one-time product as been added and will automatically be charged during your next shipment."
     }
+  },
+  "giftSubscription": {
+    "receipt": "Receipt Details",
+    "receipt_address": {
+      "first_name": "First name",
+      "last_name": "Last name",
+      "company": "Company",
+      "address1": "Address Line 1",
+      "address2": "Address Line 2 (Apt #, Floor, Etc.)",
+      "city": "City",
+      "country": "Country\/region",
+      "province": "Province",
+      "zip": "Postal\/ZIP code",
+      "phone": "Phone Number",
+      "email": "Email"
+    },
+    "gifter_details": {
+      "gifter": "Gifter Details",
+      "gifter_email": "Your Email",
+      "gifter_fname": "Your First Name",
+      "gifter_lname": "Your Last Name",
+      "gifter_msg": "Gift Message"
+    },
+    "title": "Addresses",
+    "edit_address": "Edit shipping address"
   }
 }
