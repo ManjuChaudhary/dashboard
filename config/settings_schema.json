@@ -1410,5 +1410,27 @@
         "info": "Discount button label"
       }
     ]
+  },
+  {
+    "name": "Gift Model",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Gift Subscriptions"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_gift_modal",
+        "default": false,
+        "label": "Enable Gift Modal Subscription"
+      },
+      {
+        "type": "text",
+        "id": "gift_product_tag",
+        "label": "Gift Product Tag",
+        "default": "gift-product",
+        "info": "tag will be used for identifying gift product"
+      }
+    ]
   }
 ]
