@@ -20,6 +20,10 @@ class ProductForm extends HTMLElement {
    */
   onSubmitHandler(evt) {
     evt.preventDefault();
+      // When there is gift product , gifting data will be set in local storage by this function
+    if (this.querySelector('[data-modal-opener="gift_modal"]') != null) {
+      this._giftDetails();
+    }
     const addItems = [];
     const submitButton = this.querySelector('[type="submit"]');
     const qtyInput = this.querySelector('[data-qty-input]');
@@ -64,6 +68,14 @@ class ProductForm extends HTMLElement {
         submitButton.removeAttribute('disabled');
       });
   }
+
+  _giftDetails(){
+        let localStorageObj={};
+        this.querySelectorAll('[data-giftSubscriptions]').forEach(ele => {
+          localStorageObj[`giftSubscription_${ele.getAttribute('data-giftSubscriptions')}`]=ele.value
+        });
+        localStorage.setItem('giftSubscription',JSON.stringify(localStorageObj))
+    }
 
   /**
    * Product Form Quantity Input update action
