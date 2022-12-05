@@ -1,0 +1,119 @@
+    <gift-form>
+        <modal-dialog id="gift_modal">
+            <div class="modal gift-modal" role="dialog">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-body">
+                        <button class="btn p-2 close-quickshop" type="button" id="ModalClose-video" aria-label="{{ 'sections.video-with-text.close_video' | t }}">
+                            <i class="icon-close"></i>
+                        </button>
+                        <div class="text-center mb-4 pb-1 mb-md-5 pb-md-0">
+                            <h4 class="gift-heading">{{ 'customer.giftSubscription.edit_address' | t }}</h4>
+                        </div>
+                        <div class="row gift-row">
+                            <div class="col-6 my-2">
+                                <div class="form-floating">
+                                    <input autocomplete="off" type="text" name="properties[_receipt_first_name]" aria-label="{{ 'customer.giftSubscription.receipt_address.first_name' | t }}" id="firstName"  data-receiver_fname class="form-control" placeholder="{{ 'customer.giftSubscription.receipt_address.first_name' | t }}">
+                                        <label for="firstName">{{ 'customer.giftSubscription.receipt_address.first_name' | t }}</label>
+                                </div>
+                            </div>
+                            <div class="col-6 my-2">
+                                <div class="form-floating">
+                                    <input autocomplete="off" type="text" name="properties[_receipt_last_name]" aria-label="{{ 'customer.giftSubscription.receipt_address.last_name' | t }}" id="lastName"  data-receiver_lname class="form-control" placeholder="{{ 'customer.giftSubscription.receipt_address.last_name' | t }}">
+                                    <label for="lastName">{{ 'customer.giftSubscription.receipt_address.last_name' | t }}</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 my-2">
+                                <div class="form-floating">
+                                    <input autocomplete="off" type="email" name="properties[_receipt_email]" aria-label="{{ 'customer.giftSubscription.receipt_address.email' | t }}" id="email"  data-receiver_email class="form-control" placeholder="{{ 'customer.giftSubscription.receipt_address.email' | t }}">
+                                    <label for="email">{{ 'customer.giftSubscription.receipt_address.email' | t }}</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 my-2">
+                                <div class="form-floating">
+                                    <input autocomplete="off" type="tel" name="Phone Number" aria-label="{{ 'customer.giftSubscription.receipt_address.phone' | t }}" data-giftSubscriptions="phone"  data-receiver_phone id="phoneNumber" class="form-control" placeholder="{{ 'customer.giftSubscription.receipt_address.phone' | t }}">
+                                    <label for="phoneNumber">{{ 'customer.giftSubscription.receipt_address.phone' | t }}</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 my-2">
+                                <div class="form-floating">
+                                    <input autocomplete="off" type="text" name="{{ 'customer.giftSubscription.receipt_address.address1' | t }}" aria-label="{{ 'customer.giftSubscription.receipt_address.address1' | t }}" id="address-1" data-giftSubscriptions="address1"  data-receiver_address1 class="form-control" placeholder="{{ 'customer.giftSubscription.receipt_address.address1' | t }}">
+                                    <label for="address-1">{{ 'customer.giftSubscription.receipt_address.address1' | t }}</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 my-2">
+                                <div class="form-floating">
+                                    <input autocomplete="off" type="text" name="{{ 'customer.giftSubscription.receipt_address.address2' | t }}" aria-label="{{ 'customer.giftSubscription.receipt_address.address2' | t }}" id="address-2" data-giftSubscriptions="address2"  data-receiver_address2 class="form-control" placeholder="{{ 'customer.giftSubscription.receipt_address.address2' | t }} (Apt #, Floor, Etc.)">
+                                    <label for="address-2">{{ 'customer.giftSubscription.receipt_address.address2' | t }}</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4 my-2">
+                                <div class="form-floating">
+                                    <input autocomplete="off" type="text" name="{{ 'customer.giftSubscription.receipt_address.city' | t }}" aria-label="{{ 'customer.giftSubscription.receipt_address.city' | t }}" id="city" data-giftSubscriptions="city"  data-receiver_city class="form-control" placeholder="{{ 'customer.giftSubscription.receipt_address.city' | t }}">
+                                    <label for="city">{{ 'customer.giftSubscription.receipt_address.city' | t }}</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4 my-2">
+                                <div class="form-floating">
+                                    <select name="Country" aria-label="{{ 'customer.giftSubscription.receipt_address.country' | t }}" value="United States" id="AddressCountryNew" data-giftSubscriptions="country"  data-receiver_country class="form-control" placeholder="{{ 'customer.giftSubscription.receipt_address.country' | t }}">
+                                        {{ all_country_option_tags }}
+                                    </select>
+                                    <label for="country">{{ 'customer.giftSubscription.receipt_address.country' | t }}</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4 my-2">
+                                <div class="form-floating">
+                                    <input autocomplete="off" type="text" name="Zip Code" aria-label="{{ 'customer.giftSubscription.receipt_address.zip' | t }}" id="AddressZipNew" data-giftSubscriptions="zip"  data-receiver_zip class="form-control" placeholder="{{ 'customer.giftSubscription.receipt_address.zip' | t }}">
+                                        <label for="zipCode">{{ 'customer.giftSubscription.receipt_address.zip' | t }}</label>
+                                </div>
+                            </div>
+                            <div class="col-12 my-2">
+                                <div class="form-floating" id="AddressProvinceContainerNew" style="display:none">
+                                    <select name="state" aria-label="{{ 'customer.giftSubscription.receipt_address.province' | t }}" id="AddressProvinceNew" data-giftSubscriptions="province"  data-receiver_state="state" class="form-control border-gray-200" placeholder="{{ 'customer.giftSubscription.receipt_address.province' | t }}">
+                                    </select>
+                                    <label for="state">{{ 'customer.giftSubscription.receipt_address.province' | t }}</label>
+                                </div>
+                            </div>
+                            <div class="col-12 my-2">
+                                <div class="form-floating">
+                                    <textarea rows="5" name="properties[_gift_note]" aria-label="gift_msg" placeholder="Gift Message" id="gift_msg" class="form-control" data-gift_msg></textarea>
+                                    <label for="newsletterFooterCustomerEmail">{{ 'customer.giftSubscription.gifter_details.gifter_msg' | t }}</label>
+                                </div>
+                            </div>
+                            <div class="text-center mb-4 pb-1 mb-md-5 pb-md-0">
+                                <h4 class="gift-heading">{{ 'customer.giftSubscription.gifter_details.gifter' | t }}</h4>
+                            </div>
+                            <div class="col-12 my-2">
+                                <div class="form-floating">
+                                    <input autocomplete="off" type="email" name="gifter_email" data-giftSubscriptions="email" aria-label="{{ 'customer.giftSubscription.gifter_details.gifter_email' | t }}" id="gifter_email" data-gifter_email class="form-control" placeholder="{{ 'customer.giftSubscription.gifter_details.gifter_email' | t }}">
+                                    <label for="gifter_email">{{ 'customer.giftSubscription.gifter_details.gifter_email' | t }}</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 my-2">
+                                <div class="form-floating">
+                                    <input autocomplete="off" type="text" name="gifter first name" data-giftSubscriptions="fname" aria-label="{{ 'customer.giftSubscription.gifter_details.gifter_fname' | t }}" id="gifter_firstName" data-gifter_fname class="form-control" placeholder="{{ 'customer.giftSubscription.gifter_details.gifter_fname' | t }}">
+                                    <label for="gifter_firstName">{{ 'customer.giftSubscription.gifter_details.gifter_fname' | t }}</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 my-2">
+                                <div class="form-floating">
+                                    <input autocomplete="off" type="text" name="gifter last lname" data-giftSubscriptions="lname" aria-label="{{ 'customer.giftSubscription.gifter_details.gifter_lname' | t }}" id="gifter_lastName" data-gifter_lname class="form-control" placeholder="{{ 'customer.giftSubscription.gifter_details.gifter_lname' | t }}">
+                                    <label for="gifter_lastName">{{ 'customer.giftSubscription.gifter_details.gifter_lname' | t }}</label>
+                                </div>
+                            </div>
+                            <div class="col-12 text-center mt-2">
+                                <button class="btn btn-primary" data-gift_submit_button
+                                        type="submit"
+                                        name="add"
+                                        aria-label="{{ 'products.product.add_gift_to_cart' | t | escape }}">
+                                        <span class="add-text">{{ 'products.product.add_gift_to_cart' | t }}</span>
+                                        <span class="spinner"></span>
+                                </button>  
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </modal-dialog>
+    </gift-form>
