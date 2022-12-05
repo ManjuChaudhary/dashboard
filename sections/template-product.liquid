@@ -176,6 +176,7 @@
                           render 'form-product', product: product, current_variant: current_variant, format: 'product-page'
                         endunless
                       -%}
+                      {% include 'gift-model' %}
                     {%- when 'share' -%}
                         {% if block.settings.show_social_share %}
                             <div class="d-flex align-items-center mt-5 mb-3">
