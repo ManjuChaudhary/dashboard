@@ -155,8 +155,8 @@ return `
                     <a href="#" data-modal-opener="one-time-product-popup" class="btn pe-1 rounded-0 py-2 px-0 mt-3">+ addon</a>
                 </div>
         </div>
-</div>`;
-addonHtml
+</div>`
+${addonHtml};
 }
 
  /**
