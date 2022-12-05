@@ -339,3 +339,16 @@ class VariantSelects extends HTMLElement {
     }
   }
   customElements.define('variant-radios', VariantRadios);
+
+
+
+
+ class giftForm extends HTMLElement {
+    constructor() {
+      super();
+      new Shopify.CountryProvinceSelector('AddressCountryNew', 'AddressProvinceNew', {
+        hideElement: 'AddressProvinceContainerNew'
+      });
+    }
+  }
+  customElements.define('gift-form', giftForm);
