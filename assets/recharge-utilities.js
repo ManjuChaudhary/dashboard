@@ -126,8 +126,8 @@ var existingProductIds=[];
                 }
             `;
             query+=tempQuery;
-          console.log(JSON.stringify({query : `{${query}}`}));
         }
+        console.log(JSON.stringify({query : `{${query}}`}));
         const response = await fetch('/api/2021-07/graphql.json', {
             method: 'POST',
             headers: {
