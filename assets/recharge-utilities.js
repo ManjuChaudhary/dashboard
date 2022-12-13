@@ -126,6 +126,7 @@ var existingProductIds=[];
                 }
             `;
             query+=tempQuery;
+          console.log(tempQuery)
         }
         const response = await fetch('/api/2021-07/graphql.json', {
             method: 'POST',
