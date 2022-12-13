@@ -139,6 +139,7 @@ var existingProductIds=[];
         })
         const data = await response.json();
         let tempData=data.data;
+        console.log(typeof(tempData));
         let tempGraphQLjson={};
         for (const key in tempData) {
           console.log(tempData);
