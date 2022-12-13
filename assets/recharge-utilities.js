@@ -141,6 +141,7 @@ var existingProductIds=[];
         let tempData=data.data;
         let tempGraphQLjson={};
         for (const key in tempData) {
+          console.log(tempData);
             let id=key.split('product_')[1];
             let handle=tempData[key].handle;
             let obj={
