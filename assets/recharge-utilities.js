@@ -566,34 +566,7 @@ var existingProductIds=[];
         }
     }
     
-     /**
-      Update Subscription
-     * @param {Number|String} - subscription_id 
-     * @param {Number|String} - updateSubscriptionObj - can be change Subscription price / Shipping Frequency / Product / variant
-      Take reference from : https://developer.rechargepayments.com/2021-11/subscriptions/subscriptions_update
-     * @return  {JSON} - data
-     *Note*: For changing Subscription Frequency , must need to pass these three parameters : https://d.pr/i/y32aVI 
-    */
-     async _updateSubscription(subscription_id,updateSubscriptionObj){
-        var config = {
-            url: `/subscriptions/${subscription_id}`,
-            method: 'PUT',
-            timestamp: window.APImanagerKey.timeStamp,
-            hash: window.APImanagerKey.key16,
-            data: updateSubscriptionObj
-        };
-        const response = await fetch(this.rechargeCommonApi(), this.rechargeCommonBody(config));
-        const data = await response.json();
-        // Updated subscription
-        if (response.ok) {
-            console.log('Subscription Updated Successfully ===>',data)
-            return await data;
-        }else{
-            Utility.notification('Something went wrong','Error in Updating subscription','error')
-            console.error('error in updating subscription ===>',data)
-            alert('something went wrong');
-        }
-    }
+   
 
     /**
       Remove One-time Addon 
@@ -763,25 +736,7 @@ var existingProductIds=[];
             alert('something went wrong');
         }
     }
-    /**
-      Fetch Shopify Products JSON of subscription products
-     * @param {String} - ids - Recharge Id of the customer (Example : {'ids' : '632910392,63291234,63212347'}  )
-     * @return  {JSON} - data.products
-     * For more information : https://shopify.dev/api/admin-rest/2022-07/resources/product#get-products
-    */ 
-    async _getStoreFrontProductJSON(handle) {
-        const response = await fetch(`/products/${handle}.js`);
-        const data = await response.json() ;
-        if (response.ok) {
-            console.log('Products Json ===>',data)
-            return await data;
-        }else{
-            Utility.notification('Something went wrong','Please try again later','error')
-            console.error('Error in fetching product JSON===>',data)
-            alert('something went wrong'); 
-        }
-    }
-
+    
 
     /* Genral Function */
 
