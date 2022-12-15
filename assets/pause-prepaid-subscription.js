@@ -277,7 +277,7 @@ async _skip_shippment(order_id , new_shedule_date){
 
     }).then(async function (data) {
         console.log('Skip order successfully ===>',data)
-        document.querySelector(".upcoming-skip_info").classList.remove("d-none");
+        // document.querySelector(".upcoming-skip_info").classList.remove("d-none");
             return await true;
     }).catch(function (err) {
         // There was an error
