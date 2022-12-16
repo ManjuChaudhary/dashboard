@@ -23,6 +23,7 @@ var addressIdForAddon = ''; // Stores address id, in order to pass while creatin
 var discounts=[];
 var selectedProductOptions = [];
 var allCharges=[];
+var allOrders = [];
 class dashboard extends HTMLElement {
 constructor () {
 super();
@@ -48,6 +49,8 @@ await RechargeUtilities._getPaymentMethods();
 await RechargeUtilities._getDeliverySchedule();
 
 await RechargeUtilities._getOnetimes();
+
+await RechargeUtilities._getorders();
 
 
 }
@@ -122,6 +125,19 @@ return style;
 }
 _activeHTML(subscription, variant){
 let addonHtml = this._addonHtml(subscription.id);
+let is_prepaidBtnHtml = "";
+if(subscription.is_prepaid == true)
+{
+    is_prepaidBtnHtml +=
+    `<a href="#" class="btn btn-primary" data-modal-opener="editprepaidsubscription-model"><span class="add-text">Skip Shippment</span><span class="spinner"></span></a>
+    `
+}
+else{
+    is_prepaidBtnHtml +=
+   `<a href="#" class="btn btn-primary" data-modal-opener="editsubscription-modal"><span class="add-text">edit</span><span class="spinner"></span></a>
+    <a href="#" data-modal-opener="one-time-product-popup" class="btn pe-1 rounded-0 py-2 px-0 mt-3">+ addon</a>
+   `
+}
 return `
 <div class="recharge-active" data-single-active-subscription="${subscription.id}" data-subscription-id="${subscription.id}">
         <div class="border border-gray-100 pt-5 px-5 mt-5">
@@ -151,8 +167,7 @@ return `
                     <p class="font-size-xl fw-normal text-black text-md-center ls-0 mb-0">${Shopify.formatMoney(subscription.price * subscription.quantity * 100, window.globalVariables.money_format)}</p>
                 </div>
                 <div class="col-md-2 col-6 text-md-end px-0">
-                    <a href="#" class="btn btn-primary" data-modal-opener="editsubscription-modal"><span class="add-text">edit</span><span class="spinner"></span></a>
-                    <a href="#" data-modal-opener="one-time-product-popup" class="btn pe-1 rounded-0 py-2 px-0 mt-3">+ addon</a>
+                   ${is_prepaidBtnHtml}
                 </div>
         </div>
 </div>
@@ -563,6 +578,7 @@ this.dashboard.querySelectorAll('[data-update_addon_btn]').forEach(ele => {
     })
 });
 
+
 //Bind event on subscription or onetime radio change to change price
 this.dashboard.addEventListener('input',(e)=>{
     e.stopImmediatePropagation();
@@ -672,6 +688,33 @@ this.dashboard.querySelectorAll('[data-update_charge_date]').forEach(ele => {
     })
 });
 
+let _this = this;
+// Bind Click Event On SkipPrepaid Subscription Model
+this.dashboard.querySelectorAll("[data-update_charge_date_shippment]").forEach(ele => {
+    ele.addEventListener("click" , function(event){
+      event.stopImmediatePropagation();
+      let allordersobj = window.customerDetails.rechargeCustomerOrders;
+      for(var i=0; i< allordersobj.length; i++ ){
+        let allPrepaid_orders = allordersobj[i].is_prepaid;
+        if(allPrepaid_orders == true && allordersobj[i].status == 'queued'){
+            let subscription_shiping_frequency=subscriptionData.order_interval_frequency;
+            console.log(subscription_shiping_frequency);
+            let subscription_shiping_unit =subscriptionData.order_interval_unit;
+            console.log(subscription_shiping_unit);
+            let new_shedule_date = moment(allordersobj[i].scheduled_at, "YYYY-MM-DD").add(subscription_shiping_frequency, subscription_shiping_unit);
+            console.log(new_shedule_date);
+            console.log(allordersobj[i].id);
+            // document.querySelector("[data-new_next_chargedate]").innerHTML = new_shedule_date;
+            _this._skip_shippment(allordersobj[i].id , new_shedule_date);
+
+            // Set CHARGE Date
+        }
+    }
+      _this._updateChargeDate(event);
+    })
+  });
+
+
 // Bind Click Event on Changing Frequency Modal
 this.dashboard.querySelectorAll('[data-update-subscription_frq]').forEach(ele => {
     ele.addEventListener('click',(event)=>{
@@ -723,7 +766,6 @@ this.dashboard.querySelectorAll('[data-editProduct_option]').forEach(ele=>{
 })
 
 }
-
 /**
      * 
      * @param {String} eventType : Performing specified action on specified event type modal
@@ -1329,7 +1371,18 @@ await this._updateSubscription(subscriptionData.id,updateSubscriptionObj);
     await this._setNextChargeDate(subscriptionData.id,newChargeDate);
     this.dashboard.querySelector('[data-successChargeDate]').innerText=moment(newChargeDate).format('MMMM DD, YYYY');
 }
-
+/**
+     *Skip Prepaid Subscription
+    */
+async _skip_shippment(event){
+    console.log("cliked_event");
+    event.target.closest('[data-update_charge_date_shippment]')?.classList.add('loading');
+    this._disableButton();
+    successModalType="skipconfirmed-modal";
+    let newChargeDate=event.target.closest('[data-updated-next-charge-date]').getAttribute('data-updated-next-charge-date')
+    await this._setNextChargeDate(subscriptionData.id,newChargeDate);
+    this.dashboard.querySelector('[data-successChargeDate]').innerText=moment(newChargeDate).format('MMMM DD, YYYY');
+}
  /**
     * Send an email notification
     * 
@@ -1381,7 +1434,7 @@ this.dashboard.querySelectorAll('.btn').forEach(ele => {
 });
 }
 
-/// ADD ONS WITH POPUP
+
 
 
 
