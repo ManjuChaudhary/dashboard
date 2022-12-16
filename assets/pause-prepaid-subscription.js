@@ -88,15 +88,14 @@ class dashboard{
     });
 }; 
 
+
+    
+/*
+Active susbcriptionHtml
+*/
 async activePrepaidSubscrptionsHTML(subscription){
     console.log(graphQLJson);
     console.log(subscription.external_product_id.ecommerce);
-    // var variant=graphQLJson[subscription.external_product_id.ecommerce].variants.filter((itm)=>{
-    //     if (itm.id == subscription.external_variant_id.ecommerce ) {
-    //         return itm
-    //     }
-    //     })
-    //     variant=variant[0]
         console.log(subscription.next_charge_scheduled_at);
         console.log(subscription.order_interval_frequency);
         console.log(subscription.order_interval_unit);
@@ -155,16 +154,23 @@ async activePrepaidSubscrptionsHTML(subscription){
         `;
 }
 
-
+/*
+Onload Events for bins the events 
+*/
 async onLoadEvents(subId, subFre, subInterval,new_next_charge_date){
     let _this = this;
-    document.querySelector(".skip_subscription").addEventListener("click" , function(){
-        console.log("skip_clicked");
-        _this._getorders(subId, subFre, subInterval,new_next_charge_date);
-    })  
+    document.querySelectoraa(".skip_subscription").forEach(element => {
+        element.addEventListener("click" , function(){
+            console.log("skip_clicked");
+            _this._getorders(subId, subFre, subInterval,new_next_charge_date);
+        });
+    });
 }
 
- //get Customers Orders 
+ /*get Customers Orders 
+ Pass customer Id and get all the orders.
+ */
+
  async _getorders(subId, subFre, subInterval,new_next_charge_date){
     const _this=this;
     console.log("customerDetails",customerDetails.id)
@@ -190,7 +196,11 @@ async onLoadEvents(subId, subFre, subInterval,new_next_charge_date){
     });
 }; 
 
-
+/*
+Get All prepaid Order.
+Need to check the order prepaid status and unfullfilled status
+Get Order Id and Order schedule Date.
+*/
 async getPrepaid_orders(subId, subFre, subInterval,new_next_charge_date, allOrders){
     console.log(allOrders);
     console.log(subId);
@@ -230,6 +240,11 @@ async getPrepaid_orders(subId, subFre, subInterval,new_next_charge_date, allOrde
     console.log(allprepaidOrdeidChargeId);
 }
 
+
+/*
+Update Charge date of subscription 
+Need subscription Id and Subscription updated Next Charge Date
+*/
 async _updateChargeDate(subId, new_next_charge_date){
     console.log(subId);
     console.log(new_next_charge_date);
@@ -257,6 +272,10 @@ async _updateChargeDate(subId, new_next_charge_date){
     });
 }
 
+/*
+Skip Shippment
+Use Order Api With Order ID AND update the Order Schedule with new Updated Schedule.
+*/
 async _skip_shippment(order_id , new_shedule_date){
     console.log(order_id);
     console.log(new_shedule_date);
