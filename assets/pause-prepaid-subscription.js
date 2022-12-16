@@ -159,7 +159,7 @@ Onload Events for bins the events
 */
 async onLoadEvents(subId, subFre, subInterval,new_next_charge_date){
     let _this = this;
-    document.querySelectoraa(".skip_subscription").forEach(element => {
+    document.querySelectorAll(".skip_subscription").forEach(element => {
         element.addEventListener("click" , function(){
             console.log("skip_clicked");
             _this._getorders(subId, subFre, subInterval,new_next_charge_date);
