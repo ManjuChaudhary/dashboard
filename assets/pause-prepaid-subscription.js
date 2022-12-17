@@ -236,7 +236,7 @@ async getPrepaid_orders(subId, subFre, subInterval,new_next_charge_date, allOrde
     console.log(subscription_id);
     let subscription_charge_date = new_next_charge_date;
     console.log(subscription_charge_date);
-    this._updateChargeDate(subscription_id, subscription_charge_date);
+    //this._updateChargeDate(subscription_id, subscription_charge_date);
     console.log(allprepaidOrdeidChargeId);
 }
 
