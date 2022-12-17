@@ -226,7 +226,7 @@ async getPrepaid_orders(subId, subFre, subInterval,new_next_charge_date, allOrde
             let new_shedule_date = moment(allordersobj[i].scheduled_at, "YYYY-MM-DD").add(subscription_shiping_frequency, subscription_shiping_unit);
             console.log(new_shedule_date);
             document.querySelector("[data-new_next_chargedate]").innerHTML = new_shedule_date;
-            this._skip_shippment(allordersobj[i].id , new_shedule_date);
+            //this._skip_shippment(allordersobj[i].id , new_shedule_date);
             console.log(moment(allordersobj[i].scheduled_at, "YYYY-MM-DD"));
 
             // Set CHARGE Date
@@ -236,7 +236,7 @@ async getPrepaid_orders(subId, subFre, subInterval,new_next_charge_date, allOrde
     console.log(subscription_id);
     let subscription_charge_date = new_next_charge_date;
     console.log(subscription_charge_date);
-    //this._updateChargeDate(subscription_id, subscription_charge_date);
+    this._updateChargeDate(subscription_id, subscription_charge_date);
     console.log(allprepaidOrdeidChargeId);
 }
 
