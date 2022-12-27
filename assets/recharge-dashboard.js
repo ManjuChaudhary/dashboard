@@ -52,7 +52,6 @@ await RechargeUtilities._getOnetimes();
 
 await RechargeUtilities._getorders();
 
-
 }
 //Get GraphQL Products JSON
 await RechargeUtilities._getProductsJsonByGraphQl(); 
